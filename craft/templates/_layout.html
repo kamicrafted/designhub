@@ -8,19 +8,7 @@
  # See Twig’s Template Inheritance documentation for more details:
  # http://twig.sensiolabs.org/doc/templates.html#template-inheritance
  #}
-{% include "_head.html" %}
-
-<body>
-	<div id="container">
-		<header id="header">
-			<h1><a href="{{ siteUrl }}">{{ siteName }}</a></h1>
-
-			<nav>
-				<ul>
-					<li><a href="{{ url('news') }}" {% if craft.request.firstSegment == 'news' %}class="active"{% endif %}>News</a></li>
-				</ul>
-			</nav>
-		</header>
+{% include "_header.html" %}
 
 		<main id="content" role="main">
 			{% block content %}
@@ -29,4 +17,4 @@
 			{% endblock %}
 		</main>
 
-{% include "_foot.html" %}
+{% include "_footer.html" %}
