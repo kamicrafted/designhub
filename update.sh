@@ -4,4 +4,4 @@ git pull
 npm install
 bower install
 gulp build
-/usr/share/nginx/design.drama9.com/fix-permissions.sh
+/usr/share/nginx/design.drama9.com/fix-permissions.sh 
