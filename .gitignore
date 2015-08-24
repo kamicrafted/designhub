@@ -84,4 +84,6 @@ bower_components
 ### CraftCMS ###
 # Craft Storage (cache) [http://buildwithcraft.com/help/craft-storage-gitignore]
 /craft/storage/*
+/craft/config/db.php
+/craft/config/license.key
 !/craft/storage/logo/*
