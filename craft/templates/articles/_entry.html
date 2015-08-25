@@ -6,7 +6,7 @@
     <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ hero.getUrl() }}"{% endif %}>
       <div class="title">
         <h1>{{ entry.title }}</h1>
-        <p>Posted {{ entry.postDate|time_diff }}</p>
+        <p class="timestamp">Posted {{ entry.postDate|time_diff }}</p>
         <ul class="tags">
         {% for tag in entry.tags %}
           <li><a href="{{ siteUrl }}tags/{{ tag.title | url_encode }}">{{ tag.title }}</a></li>

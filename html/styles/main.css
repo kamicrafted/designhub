@@ -51,6 +51,9 @@ header {
   background-color: #fcfcfc;
   padding-top: 50px; }
 
+.timestamp {
+  font-size: 0.75em; }
+
 .post-author-list {
   list-style-type: none;
   margin: 0;
