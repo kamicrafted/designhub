@@ -1,0 +1,28 @@
+{% extends "_layout" %}
+{% set bodyclass='view-tag' %}
+{% set tag = craft.tags.title(tag).first() %}
+{% if not tag %}
+    {% exit 404 %}
+{% endif %}
+
+{% block content %}
+<article>
+  <div class="post-wrap">
+    <div class="post-content">
+      <h1>Entries tagged with “{{ tag.title }}”</h1>
+
+      {% set entries = craft.entries.relatedTo(tag).order('title') %}
+
+      {% if entries | length %}
+          <ul>
+              {% for entry in entries %}
+                  <li>{{ entry.getLink() }}</li>
+              {% endfor %}
+          </ul>
+      {% else %}
+          <p>No entries could be found with that tag.</p>
+      {% endif %}
+    </div>
+  </div>
+</article>
+{% endblock %}

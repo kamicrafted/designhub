@@ -7,9 +7,12 @@
   <link rel="stylesheet" href="{{ siteUrl }}/styles/main.min.css">
 </head>
 
-<body>
-  <div id="container">
-    <header id="header">
+<body class="{{ bodyclass|default('default') }}">
+  <div class="wrapper">
+    <header class="header">
+      <a href="{{ siteUrl }}">Logo</a>
+    </header>
+    <!-- <header id="header">
       <h1><a href="{{ siteUrl }}">{{ siteName }}</a></h1>
 
       <nav>
@@ -18,4 +21,4 @@
           <li><a href="{{ url('resources') }}" {% if craft.request.firstSegment == 'resources' %}class="active"{% endif %}>Resources</a></li>
         </ul>
       </nav>
-    </header>
+    </header> -->

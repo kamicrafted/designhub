@@ -1,24 +1,60 @@
-{#
- # News entry template
- # -------------------
- #
- # This template gets loaded whenever a News entry’s URL is
- # requested. That’s because the News section’s Template setting is
- # set to “news/_entry”, the path to this template.
- #
- # When this template is loaded, it will already have an ‘entry’
- # variable, set to the requested News entry.
- #
- # See this page for more details on how Craft routes requests:
- # http://buildwithcraft.com/docs/routing
- #}
-
 {% extends "_layout" %}
-
+{% set bodyclass='view-article' %}
 {% block content %}
 	<article>
-		<h1>{{ entry.title }}</h1>
-		<p>Posted on {{ entry.postDate.format('F d, Y') }}</p>
-		{{ entry.body }}
+    {% set hero = entry.heroImage.first() %}
+    <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ hero.getUrl() }}"{% endif %}>
+      <div class="title">
+        <h1>{{ entry.title }}</h1>
+        <p>Posted {{ entry.postDate|time_diff }}</p>
+        <ul class="tags">
+        {% for tag in entry.tags %}
+          <li><a href="{{ siteUrl }}tags/{{ tag.title | url_encode }}">{{ tag.title }}</a></li>
+        {% endfor %}
+        </ul>
+      </div>
+
+      <ul class="post-author-list">
+        <li>
+          {% if entry.author.photoUrl %}
+            <img src="{{ entry.author.photoUrl }}" alt="" class="avatar">
+          {% else %}
+            <img src="/images/default-avatar.png" alt="" class="avatar">
+          {% endif %}
+          <div class="author-name">{{ entry.author }}</div>
+        </li>
+        {% for author in entry.coAuthors %}
+        <li>
+          {% if author.photoUrl %}
+            <img src="{{ author.photoUrl }}" alt="" class="avatar">
+          {% else %}
+            <img src="/images/default-avatar.png" alt="" class="avatar">
+          {% endif %}
+          <div class="author-name">{{ author }}</div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="post-wrap">
+      <div class="post-content">
+        {{ entry.body }}
+      </div>
+
+      <div id="disqus_thread" class="comments"></div>
+      <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES * * */
+        var disqus_shortname = 'dramafeverdesignhub';
+        var disqus_identifier = '{{ entry.section }}-{{ entry.id }}';
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    </div>
 	</article>
 {% endblock %}
