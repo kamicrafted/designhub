@@ -1,0 +1,57 @@
+.view-profile {
+  .hero {
+    text-align: center;
+    box-shadow: inset 0 -25px 50px rgba(#000, .3);
+
+    .info {
+      position: relative;
+      color: #fff;
+      text-align: center;
+      top: 50%;
+      transform: translateY(-50%);
+      h1 {
+        font-weight: 100;
+        font-size: em(42);
+        margin: 0;
+      }
+      h3 {
+        font-weight: 500;
+      }
+      .detail {
+        font-family: georgia;
+        font-size: em(14);
+        font-style: italic;
+        font-weight: 200;
+      }
+      p {
+        font-size: em(9);
+        font-weight: bold;
+        opacity: .8;
+        text-transform: uppercase;
+        margin-top: 5px;
+      }
+    }
+  }
+  .avatar-wrap {
+    background: $site-bg;
+    height: 75px;
+    position: relative;
+    .avatar {
+      position: absolute;
+      left: 50%;
+      margin-left: -40px;
+      bottom: -40px;
+      width: 80px;
+      box-shadow: 0 2px 4px rgba(#000,.3);
+      border: 4px solid $site-bg;
+    }
+  }
+  .update-hero {
+    input[type=file] {
+      position: absolute;
+      width: 100px;
+      top: 100px;
+      right: 20px;
+    }
+  }
+}

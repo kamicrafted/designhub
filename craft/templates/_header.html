@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% if title is defined %}{{ title }} - {% endif %}{{ siteName }}</title>
   <link rel="home" href="{{ siteUrl }}" />
   <link rel="stylesheet" href="{{ siteUrl }}/styles/main.min.css">
@@ -10,7 +11,18 @@
 <body class="{{ bodyclass|default('default') }}">
   <div class="wrapper">
     <header class="header">
-      <a href="{{ siteUrl }}">Logo</a>
+      <a href="{{ siteUrl }}" class="site-title">DramaFever Design</a>
+      <nav>
+        <ul>
+          <li>Articles</li>
+          <li>Inspiration</li>
+          <li>Members</li>
+          {% if not craft.session.isLoggedIn %}
+            <li>Login</li>
+            <li>Join</li>
+          {% endif %}
+        </ul>
+      </nav>
     </header>
     <!-- <header id="header">
       <h1><a href="{{ siteUrl }}">{{ siteName }}</a></h1>

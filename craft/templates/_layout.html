@@ -8,13 +8,12 @@
  # See Twig’s Template Inheritance documentation for more details:
  # http://twig.sensiolabs.org/doc/templates.html#template-inheritance
  #}
-{% include "_header.html" %}
 
-		<main id="content" role="main">
+{% block header %}{% include "_header.html" %}{% endblock %}
+		<main id="content" class="content" role="main">
 			{% block content %}
 				<p>If you see me, you haven’t set your <code>{% verbatim %}{% block content %}…{% endblock %}{% endverbatim %}</code> yet.</p>
 				<p>See Twig’s <a href="http://twig.sensiolabs.org/doc/templates.html#template-inheritance">Template Inheritance</a> documentation for an explanation.</p>
 			{% endblock %}
 		</main>
-
-{% include "_footer.html" %}
+{% block footer %}{% include "_footer.html" %}{% endblock %}

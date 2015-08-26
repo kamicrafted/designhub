@@ -1,0 +1,50 @@
+{% extends "_layout" %}
+{% set bodyclass='view-profile' %}
+{% block content %}
+    <article>
+      {% set user = craft.users.username( craft.request.segment(2) ).first() %}
+      {% set hero = user.heroImage.first() %}
+      {% set likedEntries = craft.like.getUserLikes('Entry') %}
+      <div class="avatar-wrap">
+        <img src="{% if user.photoUrl %}{{ user.photoUrl }}{% else %}/images/defaults/avatar.png{% endif %}" alt="" class="avatar">
+      </div>
+      <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ siteUrl }}{{ hero.getUrl() }}" {% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
+        <div class="info">
+          <h1>{{ user }}</h1>
+          <!-- <h3></h3> -->
+          <div class="detail">
+            {% if user.firstName %}{{ user.firstName }} {{ user.lastName }} &bull;{% endif %} {% if user.position %}{{ user.position }} &bull;{% endif %} {{ user.team }}
+          </div>
+          <p>Member since {{ currentUser.dateCreated|time_diff }}</p>
+        </div>
+      </div>
+
+      <div class="post-content">
+        <p>{{ user.blurb }}</p>
+
+        <hr>
+
+        {% if craft.entries.section('articles').authorId(user.id).find() %}
+        <ul class="article-list">
+          <li><h3>Recently written articles</h3></li>
+          {% for entry in craft.entries.section('articles').authorId(user.id).limit(5).find() %}
+          <li><a href="{{ entry.url }}">{{ entry.title }}</a></li>
+          {% endfor %}
+        </ul>
+        <hr>
+        {% endif %}
+        {% if user.username == currentUser.username %}
+          {% if likedEntries %}
+          <h3>Things you've liked <!-- ({{likedEntries|length}}) --></h3>
+          <ul class="liked-list">
+              {% for entry in likedEntries %}
+                  <li><a href="{{ entry.url }}">{{entry.title}}</a></li>
+              {% endfor %}
+          </ul>
+          {% else %}
+          <p>Nothing yet!</p>
+          {% endif %}
+        {% endif %}
+      </div>
+    </article>
+{% endblock %}

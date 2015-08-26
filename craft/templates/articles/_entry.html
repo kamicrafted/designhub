@@ -3,7 +3,7 @@
 {% block content %}
 	<article>
     {% set hero = entry.heroImage.first() %}
-    <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ hero.getUrl() }}"{% endif %}>
+    <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ siteUrl }}{{ hero.getUrl() }}"{% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
       <div class="title">
         <h1>{{ entry.title }}</h1>
         <p class="timestamp">Posted {{ entry.postDate|time_diff }}</p>
@@ -17,23 +17,35 @@
       <ul class="post-author-list">
         <li>
           {% if entry.author.photoUrl %}
-            <img src="{{ entry.author.photoUrl }}" alt="" class="avatar">
+            <a href="/users/{{ entry.author }}"><img src="{{ entry.author.photoUrl }}" alt="" class="avatar"></a>
           {% else %}
-            <img src="/images/default-avatar.png" alt="" class="avatar">
+            <a href="/users/{{ entry.author }}"><img src="/images/defaults/avatar.png" alt="" class="avatar"></a>
           {% endif %}
           <div class="author-name">{{ entry.author }}</div>
         </li>
         {% for author in entry.coAuthors %}
         <li>
           {% if author.photoUrl %}
-            <img src="{{ author.photoUrl }}" alt="" class="avatar">
+            <a href="/users/{{ author }}"><img src="{{ author.photoUrl }}" alt="" class="avatar"></a>
           {% else %}
-            <img src="/images/default-avatar.png" alt="" class="avatar">
+            <a href="/users/{{ author }}"><img src="/images/defaults/avatar.png" alt="" class="avatar"></a>
           {% endif %}
           <div class="author-name">{{ author }}</div>
         </li>
         {% endfor %}
       </ul>
+
+      <div class="post-actions">
+      {% if currentUser %}
+        {% if craft.like.isLike(entry.id) %}
+          <a href="{{actionUrl('like/remove', {id:entry.id})}}">Unlike</a>
+        {% else %}
+          <a href="{{actionUrl('like/add', {id:entry.id})}}">Like</a>
+        {% endif %}
+      {% else %}
+          <!-- Please login in order to like entries -->
+      {% endif %}
+      </div>
     </div>
 
     <div class="post-wrap">

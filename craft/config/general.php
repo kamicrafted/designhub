@@ -9,4 +9,5 @@
 
 return array(
   'omitScriptNameInUrls' => true,
+  'loginPath' => '/login/',
 );

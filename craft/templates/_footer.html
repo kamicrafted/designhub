@@ -1,8 +1,15 @@
-    <footer id="footer">
+    <footer id="footer" class="footer">
       &copy; {{ now.year }}
     </footer>
+
+    <div class="modal modal-session">
+        <div class="modal-content">
+            {% include "forms/_login.html" %}
+        </div>
+    </div>
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script src="/scripts/parallax.min.js"></script>
+  <script src="/scripts/main.js"></script>
 </body>
 </html>

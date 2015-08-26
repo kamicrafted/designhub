@@ -1,0 +1,23 @@
+{% extends "_layout" %}
+{% set bodyclass='view-users' %}
+{% requireLogin %}
+{% block content %}
+    <article>
+      {% set users = craft.users %}
+      <div class="hero" data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg"></div>
+
+      <ul class="user-list">
+        {% for user in users %}
+        <li>
+          <a href="/users/{{ user }}">
+            <img src="{% if user.photoUrl %}{{ user.photoUrl }}{% else %}/images/defaults/avatar.png{% endif %}" alt="" class="avatar">
+            <span>{{ user }} {% if user.firstName %} - {{ user.firstName}} {{ user.lastName}} {% endif %}</span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+
+
+
+    </article>
+{% endblock %}

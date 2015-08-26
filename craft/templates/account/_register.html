@@ -1,0 +1,15 @@
+{% extends "_layout" %}
+{% set bodyclass='view-session' %}
+{% if user %}
+    {% redirect "/" %}
+{% endif %}
+{% block content %}
+    <article>
+        <div class="form-session">
+            <div class="modal-content">
+                {% include "forms/_registration.html" %}
+            </div>
+        </div>
+    </article>
+{% endblock %}
+{% block footer %}{% endblock %}

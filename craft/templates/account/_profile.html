@@ -1,0 +1,58 @@
+{% extends "_layout" %}
+{% set bodyclass='view-profile' %}
+{% requireLogin %}
+{% block content %}
+    <article>
+      <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+          {{ getCsrfInput() }}
+
+          {% set hero = currentUser.heroImage.first() %}
+          <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ siteUrl }}{{ hero.getUrl() }}" {% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
+            <div class="avatar-wrap">
+              <img src="{% if currentUser.photoUrl %}{{ currentUser.photoUrl }}{% else %}/images/default-avatar.png{% endif %}" alt="" class="avatar">
+            </div>
+
+            <div class="info">
+              <h1>{{ user }}</h1>
+              <!-- <h3></h3> -->
+              <div class="detail">
+                {% if user.firstName %}{{ user.firstName }} {{ user.lastName }} &bull;{% endif %} {% if user.position %}{{ user.position }} &bull;{% endif %} {{ user.team }}
+              </div>
+              <p>Member since {{ currentUser.dateCreated|time_diff }}</p>
+            </div>
+
+            <div class="update-hero">
+              <input type="file" name="fields[heroImage]" value="Change image">
+            </div>
+          </div>
+
+          <div class="post-content">
+            <p>{{ currentUser.firstName }}{{ currentUser.lastName }}</p>
+
+            <p>Last logged in {{ currentUser.lastLoginDate|date("M d, Y") }}</p>
+            <p>Member since {{ currentUser.dateCreated|time_diff }}</p>
+
+            <input type="hidden" name="action" value="users/saveUser">
+            <input type="hidden" name="redirect" value="users/{{ currentUser.username }}">
+            <input type="hidden" name="userId" value="{{ currentUser.id }}">
+
+            <label for="first_name">First Name</label>
+            <input type="text" id="first_name" name="fields[firstName]" value="{{ currentUser.firstName }}">
+
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="fields[lastName]" value="{{ currentUser.lastName }}">
+
+            <label for="location">Position</label>
+            <input type="text" id="position" name="fields[position]" value="{{ currentUser.position }}">
+
+            <label for="location">Team</label>
+            <input type="text" id="team" name="fields[team]" value="{{ currentUser.team }}">
+
+            <label for="blurb">Blurb</label>
+            <textarea id="blurb" name="fields[blurb]">{{ currentUser.blurb }}</textarea>
+
+            <input type="submit" value="Save Profile">
+          </div>
+      </form>
+    </article>
+{% endblock %}
