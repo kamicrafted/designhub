@@ -23,12 +23,13 @@
         font-style: italic;
         font-weight: 200;
       }
-      p {
+      em {
         font-size: em(9);
         font-weight: bold;
         opacity: .8;
         text-transform: uppercase;
         margin-top: 5px;
+        font-style: normal;
       }
     }
   }

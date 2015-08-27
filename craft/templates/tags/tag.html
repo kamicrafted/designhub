@@ -1,26 +1,65 @@
 {% extends "_layout" %}
-{% set bodyclass='view-tag' %}
+{% set bodyclass='view-tags' %}
 {% set tag = craft.tags.title(tag).first() %}
+{% set entries = craft.entries.relatedTo(tag).order('title') %}
 {% if not tag %}
     {% exit 404 %}
 {% endif %}
 
 {% block content %}
+<div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ siteUrl }}{{ hero.getUrl() }}"{% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
+  <div class="info">
+    <p class="body">
+      {{ entries|length }} matches tagged as
+    </p>
+    <h1>{{ tag.title }}</h1>
+    <!-- <h3></h3> -->
+  </div>
+</div>
 <article>
   <div class="post-wrap">
     <div class="post-content">
-      <h1>Entries tagged with “{{ tag.title }}”</h1>
-
-      {% set entries = craft.entries.relatedTo(tag).order('title') %}
-
       {% if entries | length %}
-          <ul>
-              {% for entry in entries %}
-                  <li>{{ entry.getLink() }}</li>
-              {% endfor %}
-          </ul>
+        <ul class="article-list">
+          {% for entry in entries %}
+              <li>
+                <article>
+                  {% set hero = entry.heroImage.first() %}
+                  <div class="article-thumb" style="background: url({% if hero %}{{ siteUrl }}{{ hero.getUrl() }}{% else %}/images/defaults/hero-profile.jpg{% endif %}); background-size: cover;">
+                    <ul class="post-author-list">
+                      <li>
+                        {% if entry.author.photoUrl %}
+                          <a href="/users/{{ entry.author }}"><img src="{{ entry.author.photoUrl }}" alt="" class="avatar"></a>
+                        {% else %}
+                          <a href="/users/{{ entry.author }}"><img src="/images/defaults/avatar.png" alt="" class="avatar"></a>
+                        {% endif %}
+                        <div class="author-name">{{ entry.author }}</div>
+                      </li>
+                      {% for author in entry.coAuthors %}
+                      <li>
+                        {% if author.photoUrl %}
+                          <a href="/users/{{ author }}"><img src="{{ author.photoUrl }}" alt="" class="avatar"></a>
+                        {% else %}
+                          <a href="/users/{{ author }}"><img src="/images/defaults/avatar.png" alt="" class="avatar"></a>
+                        {% endif %}
+                        <div class="author-name">{{ author }}</div>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+
+                  <div class="article-preview">
+                    <h1><a href="{{ entry.url }}">{{ entry.title }}</a></h1>
+                    <em>Posted {{ entry.postDate|time_diff }}</em>
+                    <div class="preview-content">{{ entry.body.getPage(1)|hacksaw(words='20', append='...') }}</div>
+                  </div>
+                </article>
+                <a href="{{ entry.url }}" class="read-more">Continue reading</a>
+              </li>
+          {% endfor %}
+        </ul>
       {% else %}
-          <p>No entries could be found with that tag.</p>
+        <p>No entries could be found with that tag.</p>
       {% endif %}
     </div>
   </div>

@@ -11,17 +11,46 @@
  #}
 
 {% extends "_layout" %}
+{% set bodyclass="view-index" %}
 {% set title = "Articles" %}
 
 {% block content %}
-	<h1>Articles</h1>
+  <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ siteUrl }}{{ hero.getUrl() }}"{% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
+    <div class="info">
+      <h1>{{ title }}</h1>
+      <!-- <h3></h3> -->
+      <div class="detail">
+        blurb goes here
+      </div>
+    </div>
+  </div>
 
-	{% for entry in craft.entries.section('articles').find() %}
-		<article>
-			<h3><a href="{{ entry.url }}">{{ entry.title }}</a></h3>
-			<p>Posted on {{ entry.postDate.format('F d, Y') }}</p>
-			{{ entry.body.getPage(1) }}
-			<p><a href="{{ entry.url }}">Continue reading</a></p>
-		</article>
-	{% endfor %}
+  <div class="post-content">
+    {% paginate craft.entries.section('articles').limit(3) as entries %}
+      <ul class="article-list">
+          {% for entry in entries %}
+          {% set count = craft.entryCount.count(entry.id) %}
+              <li>
+                <article>
+                  {% set hero = entry.heroImage.first() %}
+                  <div class="article-thumb" style="background: url({% if hero %}{{ siteUrl }}{{ hero.getUrl() }}{% else %}/images/defaults/hero-profile.jpg{% endif %}); background-size: cover;"></div>
+
+                  <div class="article-preview">
+                    <h1><a href="{{ entry.url }}">{{ entry.title }}</a></h1>
+                    <em>Posted {{ entry.postDate|time_diff }} &bull; {{ count }} {% if count == "1" %}view{% else %}views{% endif %}</em>
+                    <div class="preview-content">{{ entry.body.getPage(1)|hacksaw(words='25', append='...') }}</div>
+                  </div>
+                </article>
+                <a href="{{ entry.url }}" class="read-more">Continue reading</a>
+              </li>
+          {% endfor %}
+      </ul>
+      <div class="pagination">
+        {% if paginate.prevUrl %}<div class="prev"><a href="{{ paginate.prevUrl }}">Previous Page</a></div>{% endif %}
+        {% if paginate.nextUrl %}<div class="next"><a href="{{ paginate.nextUrl }}">Next Page</a></div>{% endif %}
+      </div>
+    {% endpaginate %}
+  </div>
 {% endblock %}
+
+

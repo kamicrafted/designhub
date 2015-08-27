@@ -15,7 +15,7 @@
           <div class="detail">
             {% if user.firstName %}{{ user.firstName }} {{ user.lastName }} &bull;{% endif %} {% if user.position %}{{ user.position }} &bull;{% endif %} {{ user.team }}
           </div>
-          <p>Member since {{ currentUser.dateCreated|time_diff }}</p>
+          <em>Member since {{ currentUser.dateCreated|time_diff }}</em>
         </div>
       </div>
 
@@ -24,26 +24,94 @@
 
         <hr>
 
-        {% if craft.entries.section('articles').authorId(user.id).find() %}
-        <ul class="article-list">
-          <li><h3>Recently written articles</h3></li>
-          {% for entry in craft.entries.section('articles').authorId(user.id).limit(5).find() %}
-          <li><a href="{{ entry.url }}">{{ entry.title }}</a></li>
-          {% endfor %}
-        </ul>
-        <hr>
-        {% endif %}
         {% if user.username == currentUser.username %}
           {% if likedEntries %}
           <h3>Things you've liked <!-- ({{likedEntries|length}}) --></h3>
-          <ul class="liked-list">
-              {% for entry in likedEntries %}
-                  <li><a href="{{ entry.url }}">{{entry.title}}</a></li>
-              {% endfor %}
-          </ul>
+          <ul class="article-list">
+            {% for entry in likedEntries %}
+                <li>
+                  <article>
+                    {% set hero = entry.heroImage.first() %}
+                    <div class="article-thumb" style="background: url({% if hero %}{{ siteUrl }}{{ hero.getUrl() }}{% else %}/images/defaults/hero-profile.jpg{% endif %}); background-size: cover;">
+                      <ul class="post-author-list">
+                        <li>
+                          {% if entry.author.photoUrl %}
+                            <a href="/users/{{ entry.author }}"><img src="{{ entry.author.photoUrl }}" alt="" class="avatar"></a>
+                          {% else %}
+                            <a href="/users/{{ entry.author }}"><img src="/images/defaults/avatar.png" alt="" class="avatar"></a>
+                          {% endif %}
+                          <div class="author-name">{{ entry.author }}</div>
+                        </li>
+                        {% for author in entry.coAuthors %}
+                        <li>
+                          {% if author.photoUrl %}
+                            <a href="/users/{{ author }}"><img src="{{ author.photoUrl }}" alt="" class="avatar"></a>
+                          {% else %}
+                            <a href="/users/{{ author }}"><img src="/images/defaults/avatar.png" alt="" class="avatar"></a>
+                          {% endif %}
+                          <div class="author-name">{{ author }}</div>
+                        </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+
+                    <div class="article-preview">
+                      <h1><a href="{{ entry.url }}">{{ entry.title }}</a></h1>
+                      <em>Posted {{ entry.postDate|time_diff }}</em>
+                      <div class="preview-content">{{ entry.body.getPage(1)|hacksaw(words='20', append='...') }}</div>
+                    </div>
+                  </article>
+                  <a href="{{ entry.url }}" class="read-more">Continue reading</a>
+                </li>
+            {% endfor %}
+        </ul>
           {% else %}
           <p>Nothing yet!</p>
           {% endif %}
+        {% endif %}
+
+        <hr>
+
+        {% if craft.entries.section('articles').authorId(user.id).find() %}
+          <h3>Recently written articles</h3>
+          <ul class="article-list">
+            {% for entry in craft.entries.section('articles').authorId(user.id).limit(5).find() %}
+                <li>
+                  <article>
+                    {% set hero = entry.heroImage.first() %}
+                    <div class="article-thumb" style="background: url({% if hero %}{{ siteUrl }}{{ hero.getUrl() }}{% else %}/images/defaults/hero-profile.jpg{% endif %}); background-size: cover;">
+                      <ul class="post-author-list">
+                        <li>
+                          {% if entry.author.photoUrl %}
+                            <a href="/users/{{ entry.author }}"><img src="{{ entry.author.photoUrl }}" alt="" class="avatar"></a>
+                          {% else %}
+                            <a href="/users/{{ entry.author }}"><img src="/images/defaults/avatar.png" alt="" class="avatar"></a>
+                          {% endif %}
+                          <div class="author-name">{{ entry.author }}</div>
+                        </li>
+                        {% for author in entry.coAuthors %}
+                        <li>
+                          {% if author.photoUrl %}
+                            <a href="/users/{{ author }}"><img src="{{ author.photoUrl }}" alt="" class="avatar"></a>
+                          {% else %}
+                            <a href="/users/{{ author }}"><img src="/images/defaults/avatar.png" alt="" class="avatar"></a>
+                          {% endif %}
+                          <div class="author-name">{{ author }}</div>
+                        </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+
+                    <div class="article-preview">
+                      <h1><a href="{{ entry.url }}">{{ entry.title }}</a></h1>
+                      <em>Posted {{ entry.postDate|time_diff }}</em>
+                      <div class="preview-content">{{ entry.body.getPage(1)|hacksaw(words='25', append='...') }}</div>
+                    </div>
+                  </article>
+                  <a href="{{ entry.url }}" class="read-more">Continue reading</a>
+                </li>
+            {% endfor %}
+          </ul>
         {% endif %}
       </div>
     </article>

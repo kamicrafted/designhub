@@ -1,12 +1,15 @@
 {% extends "_layout" %}
 {% set bodyclass='view-article' %}
+{% set count = craft.entryCount.count(entry.id) %}
+{% do craft.entryCount.increment(entry.id) %}
 {% block content %}
 	<article>
+    <!-- https://github.com/putyourlightson/craft-entry-count -->
     {% set hero = entry.heroImage.first() %}
     <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ siteUrl }}{{ hero.getUrl() }}"{% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
       <div class="title">
         <h1>{{ entry.title }}</h1>
-        <p class="timestamp">Posted {{ entry.postDate|time_diff }}</p>
+        <p class="timestamp">Posted {{ entry.postDate|time_diff }} &bull; Viewed {{ count }} {% if count == "1" %}time{% else %}times{% endif %}</p>
         <ul class="tags">
         {% for tag in entry.tags %}
           <li><a href="{{ siteUrl }}tags/{{ tag.title | url_encode }}">{{ tag.title }}</a></li>
@@ -50,7 +53,7 @@
 
     <div class="post-wrap">
       <div class="post-content">
-        {{ entry.body }}
+        {{ entry.body|markdown }}
       </div>
 
       <div id="disqus_thread" class="comments"></div>

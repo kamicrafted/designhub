@@ -3,6 +3,7 @@
 {% if user %}
     {% redirect "/" %}
 {% endif %}
+{% block navigation %}{% endblock %}
 {% block content %}
     <article>
         <div class="form-session">

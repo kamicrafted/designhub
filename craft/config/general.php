@@ -10,4 +10,5 @@
 return array(
   'omitScriptNameInUrls' => true,
   'loginPath' => '/login/',
+  'logoutPath' => '/logout/',
 );

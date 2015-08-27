@@ -21,14 +21,60 @@
 {% set bodyclass='view-home' %}
 
 {% block content %}
-	<h1>{{ entry.title }}</h1>
+  <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ siteUrl }}{{ hero.getUrl() }}"{% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
+    <div class="info">
+      <h1>{{ entry.title }}</h1>
+      <!-- <h3></h3> -->
+      <p class="body">
+        {{ entry.body }}
+      </p>
+    </div>
+  </div>
 
-	{{ entry.body }}
+  <div class="post-content">
+    <div class="section-head">
+      <h2>Recent Articles</h2>
+      <a href="/articles/" class="viewall">View all</a>
+    </div>
 
-	<h2>Recent Articles</h2>
-	<ul>
-		{% for entry in craft.entries.section('articles').limit(5).find() %}
-			<li><a href="{{ entry.url }}">{{ entry.title }}</a></li>
-		{% endfor %}
-	</ul>
+    <ul class="article-list">
+      {% for entry in craft.entries.section('articles').limit(5).find() %}
+      {% set count = craft.entryCount.count(entry.id) %}
+          <li>
+            <article>
+              {% set hero = entry.heroImage.first() %}
+              <div class="article-thumb" style="background: url({% if hero %}{{ siteUrl }}{{ hero.getUrl() }}{% else %}/images/defaults/hero-profile.jpg{% endif %}); background-size: cover;">
+                <ul class="post-author-list">
+                  <li>
+                    {% if entry.author.photoUrl %}
+                      <a href="/users/{{ entry.author }}"><img src="{{ entry.author.photoUrl }}" alt="" class="avatar"></a>
+                    {% else %}
+                      <a href="/users/{{ entry.author }}"><img src="/images/defaults/avatar.png" alt="" class="avatar"></a>
+                    {% endif %}
+                    <div class="author-name">{{ entry.author }}</div>
+                  </li>
+                  {% for author in entry.coAuthors %}
+                  <li>
+                    {% if author.photoUrl %}
+                      <a href="/users/{{ author }}"><img src="{{ author.photoUrl }}" alt="" class="avatar"></a>
+                    {% else %}
+                      <a href="/users/{{ author }}"><img src="/images/defaults/avatar.png" alt="" class="avatar"></a>
+                    {% endif %}
+                    <div class="author-name">{{ author }}</div>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+
+              <div class="article-preview">
+                <h1><a href="{{ entry.url }}">{{ entry.title }}</a></h1>
+                <em>Posted {{ entry.postDate|time_diff }} &bull; {{ count }} {% if count == "1" %}view{% else %}views{% endif %}</em>
+                <div class="preview-content">{{ entry.body.getPage(1)|hacksaw(words='30', append='...') }}</div>
+              </div>
+            </article>
+            <a href="{{ entry.url }}" class="read-more">Continue reading</a>
+          </li>
+      {% endfor %}
+    </ul>
+  </div>
 {% endblock %}

@@ -12,17 +12,21 @@
   <div class="wrapper">
     <header class="header">
       <a href="{{ siteUrl }}" class="site-title">DramaFever Design</a>
+      {% block navigation %}
       <nav>
-        <ul>
-          <li>Articles</li>
+        <ul class="nav">
+          <li><a href="/articles/">Articles</a></li>
           <li>Inspiration</li>
-          <li>Members</li>
+          <li><a href="/users/">Members</a></li>
           {% if not craft.session.isLoggedIn %}
-            <li>Login</li>
-            <li>Join</li>
+            <li><a href="/login/">Login</a></li>
+            <li><a href="/register/">Join</a></li>
+          {% else %}
+            <li>Logout</li>
           {% endif %}
         </ul>
       </nav>
+      {% endblock %}
     </header>
     <!-- <header id="header">
       <h1><a href="{{ siteUrl }}">{{ siteName }}</a></h1>
