@@ -1,0 +1,5 @@
+{
+	"buttons": ["html","formatting","bold","italic","alignment","unorderedlist","orderedlist","link","image"],
+  "plugins":["fullscreen","table","video","filemanager","fontcolor","fontfamily","fontfamily","uploadcare"],
+	"toolbarFixed": true
+}

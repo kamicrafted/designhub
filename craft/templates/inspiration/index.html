@@ -1,0 +1,94 @@
+{% extends "_layout" %}
+{% set bodyclass='view-inspiration' %}
+
+{% block content %}
+  <div class="hero" data-parallax="scroll" data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg">
+    <div class="info">
+      <h1>Inspiration Board</h1>
+      <!-- <h3></h3> -->
+      <p class="body">
+        {{ entry.body }}
+        <a href="" class="js-post-modal">Add to board</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="modal post-modal">
+      <div class="modal-content">
+          <form action="" method="POST" enctype="multipart/form-data" class="form">
+            {{ getCsrfInput() }}
+            <input type="hidden" name="action" value="entries/saveEntry" />
+            <input type="hidden" name="redirect" value="/inspiration/">
+            <input type="hidden" name="sectionId" value="5" />
+            <input type="hidden" name="entryId" value="{{ entry.id }}">
+            <input type="hidden" name="enabled" value="1" />
+            {% macro errorList(errors) %}
+              {% if errors %}
+                  <ul class="errors">
+                      {% for error in errors %}
+                          <li>{{ error }}</li>
+                      {% endfor %}
+                  </ul>
+              {% endif %}
+            {% endmacro %}
+
+            {% from _self import errorList %}
+            <div class="dropzone">
+              <h2>Drag and drop image here</h2>
+              <input type="file" name="fields[imageUpload][]" multiple class="file">
+            </div>
+
+            <label for="title">Title</label>
+            <input id="title" type="text" name="title" {%- if entry is defined %} value="{{ entry.title }}"{% endif -%}>
+
+            <label for="url">URL</label>
+            <input id="url" type="text" name="fields[entryUrl]" {%- if entry is defined %} value="{{ entry.entryUrl }}"{% endif -%}>
+
+            <label for="body">Body</label>
+            <textarea id="body" name="fields[body]">
+                {%- if entry is defined %}{{ entry.body }}{% endif -%}
+            </textarea>
+
+
+
+            <div class="form-actions">
+              <a href="#" class="cancel">Cancel</a>
+              <input type="submit" value="Post" class="btn-form">
+            </div>
+          </form>
+      </div>
+      <div class="cancel"></div>
+  </div>
+
+  <div class="post-content">
+    <div class="packery">
+      {% for entry in craft.entries.section('inspiration').find() %}
+          <article>
+            {% set hero = entry.imageUpload.first() %}
+              {% if entry.entryUrl %}<a href="{% if 'http' in entry.entryUrl %}{% else %}http://{% endif %}{{ entry.entryUrl }}">{% endif %}
+                <div class="article-thumb">
+                  <img src="{% if hero %}{{ hero.getUrl() }}{% else %}fallback_img{% endif %}" alt="">
+                </div>
+              {% if entry.entryUrl %}</a>{% endif %}
+
+            <div class="article-overlay">
+              <span class="read-more">Read article</span>
+              <ul class="post-author-list">
+                <li>
+                  {% if entry.author.photoUrl %}
+                    <a href="/users/{{ entry.author }}"><img src="{{ entry.author.photoUrl }}" alt="" class="avatar"></a>
+                  {% else %}
+                    <a href="/users/{{ entry.author }}"><img src="/images/defaults/avatar.png" alt="" class="avatar"></a>
+                  {% endif %}
+                  <div class="author-name">{{ entry.author }}</div>
+                </li>
+              </ul>
+              <h1><a href="{{ entry.url }}">{{ entry.title }}</a></h1>
+              <!-- <em>Posted {{ entry.postDate|time_diff }} &bull; {{ count }} {% if count == "1" %}view{% else %}views{% endif %}</em> -->
+              <div class="preview-content">{{ entry.body.getPage(1)|hacksaw(words='30', append='...') }}</div>
+            </div>
+          </article>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
