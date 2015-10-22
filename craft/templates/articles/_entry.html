@@ -53,7 +53,7 @@
 
     <div class="post-wrap">
       <div class="post-content">
-        {% if iframe %}
+        {% if entry.iframe %}
           <iframe src="{{ entry.iframe }}">
         {% else %}
           {{ entry.body|markdown }}
