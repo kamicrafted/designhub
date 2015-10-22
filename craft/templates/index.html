@@ -21,13 +21,16 @@
 {% set bodyclass='view-home' %}
 
 {% block content %}
-  <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ siteUrl }}{{ hero.getUrl() }}"{% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
+  <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ hero.getUrl() }}"{% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
     <div class="info">
       <h1>{{ entry.title }}</h1>
       <!-- <h3></h3> -->
       <p class="body">
         {{ entry.body }}
       </p>
+      <div class="search">
+        {% include '_searchfield.php' %}
+      </div>
     </div>
   </div>
 
@@ -43,28 +46,31 @@
           <li>
             <article>
               {% set hero = entry.heroImage.first() %}
-              <div class="article-thumb" style="background: url({% if hero %}{{ siteUrl }}{{ hero.getUrl() }}{% else %}/images/defaults/hero-profile.jpg{% endif %}); background-size: cover;">
-                <ul class="post-author-list">
-                  <li>
-                    {% if entry.author.photoUrl %}
-                      <a href="/users/{{ entry.author }}"><img src="{{ entry.author.photoUrl }}" alt="" class="avatar"></a>
-                    {% else %}
-                      <a href="/users/{{ entry.author }}"><img src="/images/defaults/avatar.png" alt="" class="avatar"></a>
-                    {% endif %}
-                    <div class="author-name">{{ entry.author }}</div>
-                  </li>
-                  {% for author in entry.coAuthors %}
-                  <li>
-                    {% if author.photoUrl %}
-                      <a href="/users/{{ author }}"><img src="{{ author.photoUrl }}" alt="" class="avatar"></a>
-                    {% else %}
-                      <a href="/users/{{ author }}"><img src="/images/defaults/avatar.png" alt="" class="avatar"></a>
-                    {% endif %}
-                    <div class="author-name">{{ author }}</div>
-                  </li>
-                  {% endfor %}
-                </ul>
-              </div>
+                <a href="{{ entry.url }}">
+                  <div class="article-thumb" style="background: url({% if hero %}{{ hero.getUrl() }}{% else %}/images/defaults/hero-profile.jpg{% endif %}); background-size: cover;">
+                    <span class="read-more">Read article</span>
+                    <ul class="post-author-list">
+                      <li>
+                        {% if entry.author.photoUrl %}
+                          <a href="/users/{{ entry.author }}"><img src="{{ entry.author.photoUrl }}" alt="" class="avatar"></a>
+                        {% else %}
+                          <a href="/users/{{ entry.author }}"><img src="/images/defaults/avatar.png" alt="" class="avatar"></a>
+                        {% endif %}
+                        <div class="author-name">{{ entry.author }}</div>
+                      </li>
+                      {% for author in entry.coAuthors %}
+                      <li>
+                        {% if author.photoUrl %}
+                          <a href="/users/{{ author }}"><img src="{{ author.photoUrl }}" alt="" class="avatar"></a>
+                        {% else %}
+                          <a href="/users/{{ author }}"><img src="/images/defaults/avatar.png" alt="" class="avatar"></a>
+                        {% endif %}
+                        <div class="author-name">{{ author }}</div>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </a>
 
               <div class="article-preview">
                 <h1><a href="{{ entry.url }}">{{ entry.title }}</a></h1>
@@ -72,7 +78,6 @@
                 <div class="preview-content">{{ entry.body.getPage(1)|hacksaw(words='30', append='...') }}</div>
               </div>
             </article>
-            <a href="{{ entry.url }}" class="read-more">Continue reading</a>
           </li>
       {% endfor %}
     </ul>

@@ -1,0 +1,40 @@
+.view-inspiration {
+  .hero {
+    height: 200px;
+  }
+  .post-content {
+    max-width: 1200px;
+  }
+  .packery {
+    > article {
+      max-width: 25%;
+      padding: 5px;
+      transition: all .15s $ease-out-quad;
+      &:hover {
+        transform: scale(1.05);
+        z-index: 100;
+        img {
+          box-shadow: 0 5px 15px rgba(#000,.15);
+        }
+        .article-overlay {
+
+        }
+      }
+      img {
+        transition: all .15s $ease-out-quad;
+        display: block;
+        box-shadow: 0 1px 3px rgba(#000,.15);
+      }
+    }
+    .article-overlay {
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      background: linear-gradient(to bottom, rgba(#000,0), rgba(#000,.75));
+      color: #fff;
+      padding: 10px;
+      font-size: em(13);
+      display: none;
+    }
+  }
+}

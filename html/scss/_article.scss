@@ -72,6 +72,7 @@
   .article-list {
     >li {
       @include span-columns(3);
+      @include omega(4n);
     }
   }
   .post-content {

@@ -14,9 +14,13 @@
   ],
   "homepage": "https://github.com/kamicrafted/designhub",
   "dependencies": {
-    "jquery": "~2.1.4",
+    "bitters": "~1.0.0",
     "bourbon": "~4.2.3",
-    "neat": "~1.7.2",
-    "bitters": "~1.0.0"
+    "imagesloaded": "~3.1.8",
+    "jquery": "~2.1.4",
+    "neat": "~1.7.2"
+  },
+  "resolutions": {
+    "jquery": "~2.1.4"
   }
 }

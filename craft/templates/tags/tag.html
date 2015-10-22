@@ -7,7 +7,7 @@
 {% endif %}
 
 {% block content %}
-<div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ siteUrl }}{{ hero.getUrl() }}"{% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
+<div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ hero.getUrl() }}"{% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
   <div class="info">
     <p class="body">
       {{ entries|length }} matches tagged as
@@ -25,7 +25,8 @@
               <li>
                 <article>
                   {% set hero = entry.heroImage.first() %}
-                  <div class="article-thumb" style="background: url({% if hero %}{{ siteUrl }}{{ hero.getUrl() }}{% else %}/images/defaults/hero-profile.jpg{% endif %}); background-size: cover;">
+                  <div class="article-thumb" style="background: url({% if hero %}{{ hero.getUrl() }}{% else %}/images/defaults/hero-profile.jpg{% endif %}); background-size: cover;">
+                    <a href="{{ entry.url }}" class="read-more">Read article</a>
                     <ul class="post-author-list">
                       <li>
                         {% if entry.author.photoUrl %}
@@ -54,7 +55,6 @@
                     <div class="preview-content">{{ entry.body.getPage(1)|hacksaw(words='20', append='...') }}</div>
                   </div>
                 </article>
-                <a href="{{ entry.url }}" class="read-more">Continue reading</a>
               </li>
           {% endfor %}
         </ul>

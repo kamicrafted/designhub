@@ -3,11 +3,11 @@
 {% requireLogin %}
 {% block content %}
     <article>
-      <form method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+      <form method="post" accept-charset="UTF-8" enctype="multipart/form-data" class="form">
           {{ getCsrfInput() }}
 
           {% set hero = currentUser.heroImage.first() %}
-          <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ siteUrl }}{{ hero.getUrl() }}" {% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
+          <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ hero.getUrl() }}" {% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
             <div class="avatar-wrap">
               <img src="{% if currentUser.photoUrl %}{{ currentUser.photoUrl }}{% else %}/images/default-avatar.png{% endif %}" alt="" class="avatar">
             </div>
@@ -18,7 +18,7 @@
               <div class="detail">
                 {% if user.firstName %}{{ user.firstName }} {{ user.lastName }} &bull;{% endif %} {% if user.position %}{{ user.position }} &bull;{% endif %} {{ user.team }}
               </div>
-              <p>Member since {{ currentUser.dateCreated|time_diff }}</p>
+              <em>Member since {{ currentUser.dateCreated|time_diff }}</em>
             </div>
 
             <div class="update-hero">
@@ -27,31 +27,46 @@
           </div>
 
           <div class="post-content">
-            <p>{{ currentUser.firstName }}{{ currentUser.lastName }}</p>
-
-            <p>Last logged in {{ currentUser.lastLoginDate|date("M d, Y") }}</p>
-            <p>Member since {{ currentUser.dateCreated|time_diff }}</p>
-
             <input type="hidden" name="action" value="users/saveUser">
             <input type="hidden" name="redirect" value="users/{{ currentUser.username }}">
             <input type="hidden" name="userId" value="{{ currentUser.id }}">
 
-            <label for="first_name">First Name</label>
-            <input type="text" id="first_name" name="fields[firstName]" value="{{ currentUser.firstName }}">
+            <div class="field-group">
+              <div class="half">
+                <label for="first_name">First Name</label>
+                <input type="text" id="first_name" name="fields[firstName]" value="{{ currentUser.firstName }}">
+              </div>
 
-            <label for="last_name">Last Name</label>
-            <input type="text" id="last_name" name="fields[lastName]" value="{{ currentUser.lastName }}">
+              <div class="half">
+                <label for="last_name">Last Name</label>
+                <input type="text" id="last_name" name="fields[lastName]" value="{{ currentUser.lastName }}">
+              </div>
+            </div>
 
-            <label for="location">Position</label>
-            <input type="text" id="position" name="fields[position]" value="{{ currentUser.position }}">
+            <div class="field-group">
+              <div class="half">
+                <label for="location">Position</label>
+                <input type="text" id="position" name="fields[position]" value="{{ currentUser.position }}">
+              </div>
 
-            <label for="location">Team</label>
-            <input type="text" id="team" name="fields[team]" value="{{ currentUser.team }}">
+              <div class="half">
+                <label for="location">Team</label>
+                <input type="text" id="team" name="fields[team]" value="{{ currentUser.team }}">
+              </div>
+            </div>
 
             <label for="blurb">Blurb</label>
-            <textarea id="blurb" name="fields[blurb]">{{ currentUser.blurb }}</textarea>
+            <!-- <textarea id="blurb" name="fields[blurb]" class="textarea">{{ currentUser.blurb }}</textarea> -->
+            {% includeJsResource "lib/redactor/redactor.js" %}
+            {% includeCssResource "lib/redactor/redactor.css" %}
 
-            <input type="submit" value="Save Profile">
+            <textarea id="blurb" name="fields[blurb]">{{ currentUser.blurb }}</textarea>
+            {% includeJs "$('#blurb').redactor();" %}
+
+            <div class="form-actions">
+              <a href="" class="cancel">Cancel</a>
+              <input type="submit" value="Save Profile" class="btn-form">
+            </div>
           </div>
       </form>
     </article>

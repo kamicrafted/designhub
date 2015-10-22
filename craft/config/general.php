@@ -11,4 +11,7 @@ return array(
   'omitScriptNameInUrls' => true,
   'loginPath' => '/login/',
   'logoutPath' => '/logout/',
+  'environmentVariables' => array(
+      'siteUrl'  => 'http://104.131.80.171/',
+    )
 );

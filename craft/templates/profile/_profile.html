@@ -8,14 +8,18 @@
       <div class="avatar-wrap">
         <img src="{% if user.photoUrl %}{{ user.photoUrl }}{% else %}/images/defaults/avatar.png{% endif %}" alt="" class="avatar">
       </div>
-      <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ siteUrl }}{{ hero.getUrl() }}" {% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
+      <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ hero.getUrl() }}" {% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
         <div class="info">
           <h1>{{ user }}</h1>
           <!-- <h3></h3> -->
           <div class="detail">
             {% if user.firstName %}{{ user.firstName }} {{ user.lastName }} &bull;{% endif %} {% if user.position %}{{ user.position }} &bull;{% endif %} {{ user.team }}
           </div>
-          <em>Member since {{ currentUser.dateCreated|time_diff }}</em>
+          <p><em>Member since {{ user.dateCreated|time_diff }}</em></p>
+
+          {% if user.username == currentUser.username %}
+            <a href="/profile/" class="btn-default">Edit profile</a>
+          {% endif %}
         </div>
       </div>
 
@@ -32,7 +36,7 @@
                 <li>
                   <article>
                     {% set hero = entry.heroImage.first() %}
-                    <div class="article-thumb" style="background: url({% if hero %}{{ siteUrl }}{{ hero.getUrl() }}{% else %}/images/defaults/hero-profile.jpg{% endif %}); background-size: cover;">
+                    <div class="article-thumb" style="background: url({% if hero %}{{ hero.getUrl() }}{% else %}/images/defaults/hero-profile.jpg{% endif %}); background-size: cover;">
                       <ul class="post-author-list">
                         <li>
                           {% if entry.author.photoUrl %}
@@ -79,7 +83,7 @@
                 <li>
                   <article>
                     {% set hero = entry.heroImage.first() %}
-                    <div class="article-thumb" style="background: url({% if hero %}{{ siteUrl }}{{ hero.getUrl() }}{% else %}/images/defaults/hero-profile.jpg{% endif %}); background-size: cover;">
+                    <div class="article-thumb" style="background: url({% if hero %}{{ hero.getUrl() }}{% else %}/images/defaults/hero-profile.jpg{% endif %}); background-size: cover;">
                       <ul class="post-author-list">
                         <li>
                           {% if entry.author.photoUrl %}

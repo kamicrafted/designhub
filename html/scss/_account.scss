@@ -1,3 +1,14 @@
 .view-session {
   background-color: #f0f3f5;
 }
+
+.backdrop {
+  background: url(http://i.imgur.com/WbDj9fM.jpg) no-repeat center center;
+  background-size: cover;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

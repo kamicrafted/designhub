@@ -6,6 +6,7 @@
   <title>{% if title is defined %}{{ title }} - {% endif %}{{ siteName }}</title>
   <link rel="home" href="{{ siteUrl }}" />
   <link rel="stylesheet" href="{{ siteUrl }}/styles/main.min.css">
+  <link href="https://fontastic.s3.amazonaws.com/vdJyVMRXu52cmjJL4d3Ag8/icons.css" rel="stylesheet">
 </head>
 
 <body class="{{ bodyclass|default('default') }}">
@@ -16,13 +17,13 @@
       <nav>
         <ul class="nav">
           <li><a href="/articles/">Articles</a></li>
-          <li>Inspiration</li>
+          <li><a href="/inspiration/">Inspiration</a></li>
           <li><a href="/users/">Members</a></li>
           {% if not craft.session.isLoggedIn %}
             <li><a href="/login/">Login</a></li>
             <li><a href="/register/">Join</a></li>
           {% else %}
-            <li>Logout</li>
+            <li><a href="/logout/">Logout</a></li>
           {% endif %}
         </ul>
       </nav>

@@ -6,13 +6,13 @@
 	<article>
     <!-- https://github.com/putyourlightson/craft-entry-count -->
     {% set hero = entry.heroImage.first() %}
-    <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ siteUrl }}{{ hero.getUrl() }}"{% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
+    <div class="hero" {% if hero %} data-parallax="scroll" data-image-src="{{ hero.getUrl() }}"{% else %} data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg" {% endif %}>
       <div class="title">
         <h1>{{ entry.title }}</h1>
         <p class="timestamp">Posted {{ entry.postDate|time_diff }} &bull; Viewed {{ count }} {% if count == "1" %}time{% else %}times{% endif %}</p>
         <ul class="tags">
         {% for tag in entry.tags %}
-          <li><a href="{{ siteUrl }}tags/{{ tag.title | url_encode }}">{{ tag.title }}</a></li>
+          <li><a href="/tags/{{ tag.title | url_encode }}">{{ tag.title }}</a></li>
         {% endfor %}
         </ul>
       </div>
@@ -41,9 +41,9 @@
       <div class="post-actions">
       {% if currentUser %}
         {% if craft.like.isLike(entry.id) %}
-          <a href="{{actionUrl('like/remove', {id:entry.id})}}">Unlike</a>
+          <a href="{{actionUrl('like/remove', {id:entry.id})}}" class="mark-on"><i class="icon-mark-on"></i> Unstash</a>
         {% else %}
-          <a href="{{actionUrl('like/add', {id:entry.id})}}">Like</a>
+          <a href="{{actionUrl('like/add', {id:entry.id})}}" class="mark-off"><i class="icon-mark-off"></i> Stash</a>
         {% endif %}
       {% else %}
           <!-- Please login in order to like entries -->

@@ -1,22 +1,45 @@
 {% extends "_layout" %}
 {% set bodyclass='view-users' %}
+{% set users = craft.users %}
 {% block content %}
-    <article>
-      {% set users = craft.users %}
-      <div class="hero" data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg"></div>
+<div class="hero" data-parallax="scroll" data-image-src="/images/defaults/hero-profile.jpg"></div>
+<div class="post-content">
+  <ul class="article-list">
+    {% for user in users %}
+      <li>
+        <article>
+          {% set hero = user.heroImage.first() %}
+              <a href="/users/{{ user }}" class="article-thumb" style="background: url({% if hero %}{{ hero.getUrl() }}{% else %}/images/defaults/hero-profile.jpg{% endif %}); background-size: cover;">
+                <div class="info">
+                  <h1>{{ user }}</h1>
+                </div>
+                {% if user.photoUrl %}
+                  <img src="{{ user.photoUrl }}" alt="" class="avatar">
+                {% else %}
+                  <img src="/images/defaults/avatar.png" alt="" class="avatar">
+                {% endif %}
+                <span class="read-more">View Profile</span>
+                <a href="/users/{{ user }}"></a>
+              </a>
+              {% if craft.entries.section('articles').authorId(user.id).find() %}
+              <div class="article-preview">
+                {% if user.firstName %}<h3>{{ user.firstName }} {{ user.lastName }}</h3>{% else %}<div class="spacer"></div>{% endif %}
 
-      <ul class="user-list">
-        {% for user in users %}
-        <li>
-          <a href="/users/{{ user }}">
-            <img src="{% if user.photoUrl %}{{ user.photoUrl }}{% else %}/images/defaults/avatar.png{% endif %}" alt="" class="avatar">
-            <span>{{ user }} {% if user.firstName %} - {{ user.firstName}} {{ user.lastName}} {% endif %}</span>
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
+                <hr>
 
+                <h4>Recently authored articles</h4>
+                <ul class="stats">
+                  {% for entry in craft.entries.section('articles').authorId(user.id).limit(3).find() %}
+                    <li><h2><a href="{{ entry.url }}">{{ entry.title }}</a></h2></li>
+                  {% endfor %}
+                </ul>
+              </div>
+              {% endif %}
 
-
-    </article>
+              <div class="joindate">Joined {{ user.dateCreated|time_diff }}</div>
+        </article>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
 {% endblock %}

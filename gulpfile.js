@@ -50,9 +50,9 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('default', ['clean'], function() {
-    gulp.start('styles', 'scripts', 'images', 'watch');
+    gulp.start('styles', 'images', 'watch');
 });
 
 gulp.task('build', ['clean'], function() {
-    gulp.start('styles', 'scripts', 'images');
+    gulp.start('styles', 'images');
 });
